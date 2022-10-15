@@ -2,32 +2,32 @@
 .red {
   background-color: red;
   border: 1px solid red;
-  opacity: 0.2;
+  opacity: 0.3;
 }
 .blue {
   background-color: blue;
   border: 1px solid blue;
-  opacity: 0.2;
+  opacity: 0.3;
 }
 .green {
   background-color: green;
   border: 1px solid green;
-  opacity: 0.2;
+  opacity: 0.3;
 }
 .black {
   background-color: black;
   border: 1px solid black;
-  opacity: 0.2;
+  opacity: 0.3;
 }
 .IC {
   background-color: gray;
   border: 1px solid gray;
-  opacity: 0.2;
+  opacity: 0.3;
 }
 .select {
   background-color: slateblue;
-  border: 1px solid gray;
-  opacity: 0.2;
+  border: 1px solid slateblue;
+  opacity: 0.3;
 }
 .clear {
   margin-left: auto;

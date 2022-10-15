@@ -14,6 +14,7 @@ const anime_canvas = document.getElementById("animation");
 const base_ctx = base_canvas.getContext("2d");
 const canvas = new fabric.Canvas("draw");
 
+
 $(document).ready( function() {
   win_width = window.innerWidth;
   win_height = window.innerHeight;
@@ -53,6 +54,7 @@ function set_grid() {
   }
 }
 
+// 図形生成
 function add_line(x1, y1, x2, y2, color) {
   canvas.add(new fabric.Line(
     // (始点x, y, 終点x, y)
@@ -66,7 +68,7 @@ function add_line(x1, y1, x2, y2, color) {
 }
 
 function add_rec(x1, y1, x2, y2, color) {
-  let new_rect = new fabric.Rect({
+  canvas.add(new fabric.Rect({
     left: x1, top: y1,
     width: x2-x1, height: y2-y1,
     fill: color,
@@ -76,45 +78,17 @@ function add_rec(x1, y1, x2, y2, color) {
     selectable: false,
     hasControls: false,
     hoverCursor: "default",
-  });
-  canvas.add(new_rect);
-}
-
-function deleteObj() {
-  let activeObj = canvas.getActiveObject();
-  document.onkeydown = function(e) {
-    if(e.key == "Backspace") canvas.remove(activeObj);
-  }
+  }));
 }
 
 canvas.on("mouse:down", function(options) {
-  // select mode出ないなら 
-  if(mode!="select") {
-    mouse_move = true;
-    oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
-    oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
-  }
+  mouse_move = true;
+  oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
+  oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
 })
-
-canvas.on("mouse:move", function(options) {
-  if(mouse_move) {
-    x = options.pointer.x;
-    y = options.pointer.y;
-  }
-})
-
-canvas.on("selection:created", function(options) {
-  let activeObjects = canvas.getActiveObjects();
-  document.onkeydown = function(e) {
-    if(e.key == "Backspace") {
-      activeObjects.forEach(obj=>{
-        canvas.remove(obj);
-    })};
-  }
-});
 
 canvas.on("mouse:up", function(options) {
-  if(mouse_move) {
+  if(mouse_move && mode!="select") {
     mouse_move = false;
     newX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
     newY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
@@ -126,6 +100,18 @@ canvas.on("mouse:up", function(options) {
   }
 })
 
+// 選択オブジェクトの削除
+canvas.on("selection:created", function(options) {
+  let activeObjects = canvas.getActiveObjects();
+  document.onkeydown = function(e) {
+    if(e.key == "Backspace") {
+      activeObjects.forEach(obj=>{
+        canvas.remove(obj);
+    })};
+  }
+});
+
+// selectモードの時の座標計算
 canvas.on("object:moving", function(options) {
   let activeObj = canvas.getActiveObject();
   newX = Math.round(activeObj.left/grid_spacing)*grid_spacing
@@ -136,9 +122,10 @@ canvas.on("object:moving", function(options) {
   }).setCoords();
 })
 
+// モード切替
 color_list = ["red", "blue", "green", "black", "ic", "select"];
-
 function change_color(color, id) {
+  canvas.discardActiveObject(); // 選択の全解除
   mode = "line";
   line_color = color;
   let all_obj = canvas.getObjects();
@@ -147,7 +134,6 @@ function change_color(color, id) {
     obj.selectable = false;
   });
 
-  
   for(let i=0; i<color_list.length; i++) {
     document.getElementById(color_list[i]).classList.remove("active");
   }
@@ -155,14 +141,15 @@ function change_color(color, id) {
 }
 
 function draw_rec(color, id) {
+  canvas.discardActiveObject(); // 選択の全解除
+  let all_obj = canvas.getObjects();
   mode = "rec";
   line_color = color;
-  let all_obj = canvas.getObjects();
   all_obj.forEach(obj=>{
     obj.hoverCursor = "default";
     obj.selectable = false;
   });
-  
+
   for(let i=0; i<color_list.length; i++) {
     document.getElementById(color_list[i]).classList.remove("active");
   }
@@ -183,6 +170,7 @@ function select(id) {
   document.getElementById(id).classList.add("active");
 }
 
+// キャンバス全削除
 const clear_btn = document.getElementById("clear_btn");
 clear_btn.onclick = function(){
   canvas.clear();

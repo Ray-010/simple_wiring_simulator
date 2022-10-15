@@ -10,11 +10,9 @@ const can = document.getElementById("animation");
 const ctx = can.getContext("2d");
 
 canvas.on("mouse:down", function(options) {
-  if(mode!="select") {
-    b_oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
-    b_oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
-    can_mouse_event = true;
-  }
+  b_oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
+  b_oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+  can_mouse_event = true;
 })
 
 canvas.on("mouse:move", function(options) {

@@ -6,18 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>簡易配線図シミュレータ</title>
   <link rel="stylesheet" href="main.css">
+  <script src="https://kit.fontawesome.com/33f8918f34.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <h3>簡易配線図シミュレータ</h3>
+  <h3>簡易配線シミュレータ</h3>
 
   <div class="colors">
-    <button id="red" class="box red active" onclick="change_color('#ff0000', 'red')">Red</button>
-    <button id="blue" class="box blue" onclick="change_color('#0000ff', 'blue')">Blue</button>
-    <button id="green" class="box green" onclick="change_color('#008000', 'green')">Green</button>
-    <button id="black" class="box black" onclick="change_color('#000000', 'black')">Black</button>
-    <button id="ic" class="box IC" onclick="draw_rec('#808080', 'ic')">IC</button>
-    <button id="select" class="box select" onclick="select('select')">✋</button>
-
+    <button id="red" class="box red active" onclick="change_color('#ff0000', 'red')"><i class="fas fa-pen"></i></button>
+    <button id="blue" class="box blue" onclick="change_color('#0000ff', 'blue')"><i class="fas fa-pen"></i></button>
+    <button id="green" class="box green" onclick="change_color('#008000', 'green')"><i class="fas fa-pen"></i></button>
+    <button id="black" class="box black" onclick="change_color('#000000', 'black')"><i class="fas fa-pen"></i></button>
+    <button id="ic" class="box IC" onclick="draw_rec('#808080', 'ic')"><i class="fas fa-microchip"></i></button>
+    <button id="select" class="box select" onclick="select('select')">
+      <i class="fas fa-arrows-alt fa-lg"></i>
+    </button>
     <button id="clear_btn" class="box clear">クリア</button>
   </div>
 
