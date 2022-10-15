@@ -1,0 +1,68 @@
+/* Nav --------------------------------------------------------- */
+.red {
+  background-color: red;
+  border: 1px solid red;
+  opacity: 0.6;
+}
+.blue {
+  background-color: blue;
+  border: 1px solid blue;
+  opacity: 0.8;
+}
+.green {
+  background-color: green;
+  border: 1px solid green;
+  opacity: 0.8;
+}
+.black {
+  background-color: black;
+  border: 1px solid black;
+  opacity: 0.8;
+}
+.IC {
+  background-color: gray;
+  border: 1px solid gray;
+  opacity: 0.8;
+}
+.clear {
+  margin-left: auto;
+  background-color: cornflowerblue;
+  border: 1px solid cornflowerblue;
+  opacity: 0.8;
+}
+
+.colors {
+  display: flex;
+}
+
+.box {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 5px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100px;
+  height: 50px;
+}
+
+/* Canvas --------------------------------------------------------- */
+
+.layer-wrap {
+  position: relative;
+}
+.layer-wrap > canvas {
+  border: 1px solid #999;
+  position: absolute;
+}
+
+.hidden {
+  display: none;
+}
+
+#base {
+  /* background-color: rgba(0, 255, 0, 0.2); */
+}
+
