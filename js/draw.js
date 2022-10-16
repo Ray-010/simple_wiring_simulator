@@ -110,6 +110,15 @@ canvas.on("selection:created", function(options) {
     })};
   }
 });
+canvas.on("selection:updated", function(options) {
+  let activeObjects = canvas.getActiveObjects();
+  document.onkeydown = function(e) {
+    if(e.key == "Backspace") {
+      activeObjects.forEach(obj=>{
+        canvas.remove(obj);
+    })};
+  }
+})
 
 // selectモードの時の座標計算
 canvas.on("object:moving", function(options) {
