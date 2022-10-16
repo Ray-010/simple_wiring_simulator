@@ -104,7 +104,7 @@ canvas.on("mouse:up", function(options) {
 canvas.on("selection:created", function(options) {
   let activeObjects = canvas.getActiveObjects();
   document.onkeydown = function(e) {
-    if(e.key == "Backspace") {
+    if(e.key == "Backspace" && mode == "select") {
       activeObjects.forEach(obj=>{
         canvas.remove(obj);
     })};
@@ -113,7 +113,7 @@ canvas.on("selection:created", function(options) {
 canvas.on("selection:updated", function(options) {
   let activeObjects = canvas.getActiveObjects();
   document.onkeydown = function(e) {
-    if(e.key == "Backspace") {
+    if(e.key == "Backspace" && mode == "select") {
       activeObjects.forEach(obj=>{
         canvas.remove(obj);
     })};
