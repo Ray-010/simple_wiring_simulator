@@ -156,6 +156,7 @@ colors = ["red", "blue", "green", "black", "purple", "brown", "orange", "yellow"
 
 function change_color(color, id) {
   line_color = color;
+  change_mode("line");
   for(let i=0; i<colors.length; i++) {
     document.getElementById(colors[i]).classList.remove("active");
   }
