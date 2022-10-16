@@ -8,6 +8,9 @@ let line_width = 3;
 let grid_spacing = 15;
 let mode = "line"
 
+let activeObjLeft = null;
+let activeObjTop = null;
+
 const layer = document.getElementById("layer"); 
 const base_canvas = document.getElementById("base");
 const anime_canvas = document.getElementById("animation");
@@ -83,15 +86,31 @@ function add_rec(x1, y1, x2, y2, color) {
 
 canvas.on("mouse:down", function(options) {
   mouse_move = true;
-  oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
-  oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+  if(mode=="rec") {
+    oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing-(grid_spacing/2)
+    oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing-(grid_spacing/2)
+  } else{
+    oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
+    oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+  }
+
+  let activeObject = canvas.getActiveObject();
+  if(activeObject) {
+    activeObjLeft = activeObject.left;
+    activeObjTop = activeObject.top;
+  }
 })
 
 canvas.on("mouse:up", function(options) {
   if(mouse_move && mode!="select") {
     mouse_move = false;
-    newX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
-    newY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+    if(mode=="rec") {
+      newX = Math.round(options.pointer.x/grid_spacing)*grid_spacing-(grid_spacing/2)
+      newY = Math.round(options.pointer.y/grid_spacing)*grid_spacing-(grid_spacing/2)
+    } else {
+      newX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
+      newY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+    }
     if(mode == "line") {
       add_line(oldX, oldY, newX, newY, line_color);
     } else if (mode=="rec") {
@@ -123,8 +142,8 @@ canvas.on("selection:updated", function(options) {
 // selectモードの時の座標計算
 canvas.on("object:moving", function(options) {
   let activeObj = canvas.getActiveObject();
-  newX = Math.round(activeObj.left/grid_spacing)*grid_spacing
-  newY = Math.round(activeObj.top/grid_spacing)*grid_spacing
+  newX = activeObjLeft + Math.round((options.pointer.x-oldX)/grid_spacing)*grid_spacing;
+  newY = activeObjTop + Math.round((options.pointer.y-oldY)/grid_spacing)*grid_spacing;
   activeObj.set({
     left: newX,
     top: newY,

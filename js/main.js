@@ -10,16 +10,26 @@ const can = document.getElementById("animation");
 const ctx = can.getContext("2d");
 
 canvas.on("mouse:down", function(options) {
-  b_oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
-  b_oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+  if(mode=="rec") {
+    b_oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing-(grid_spacing/2)
+    b_oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing-(grid_spacing/2)
+  } else {
+    b_oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
+    b_oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+  }
   can_mouse_event = true;
 })
 
 canvas.on("mouse:move", function(options) {
   ctx.clearRect(0, 0, can.width,can.height);
   if(can_mouse_event) {
-    moveX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
-    moveY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+    if(mode=="rec") {
+      moveX = Math.round(options.pointer.x/grid_spacing)*grid_spacing-(grid_spacing/2)
+      moveY = Math.round(options.pointer.y/grid_spacing)*grid_spacing-(grid_spacing/2)
+    } else {
+      moveX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
+      moveY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
+    }
     ctx.lineWidth = line_width;
 
     ctx.beginPath();
@@ -35,8 +45,8 @@ canvas.on("mouse:move", function(options) {
       
       ctx.font = "bold 25px serif";
       ctx.fillStyle = "#000000";
-      x_value = Math.abs((moveX-oldX)/grid_spacing)+1;
-      y_value = Math.abs((moveY-oldY)/grid_spacing)+1;
+      x_value = Math.abs((moveX-oldX)/grid_spacing);
+      y_value = Math.abs((moveY-oldY)/grid_spacing);
       ctx.fillText(`${x_value}x${y_value}`, moveX+5, b_oldY-10);
       ctx.stroke();
 
