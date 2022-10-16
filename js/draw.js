@@ -4,6 +4,8 @@ let newX = null;//終点
 let newY = null;//終点
 let mouse_move = false;
 let line_color = "#ff0000"
+let rec_line_color = "#808080"
+let rec_color = "#000000"
 let line_width = 3;
 let grid_spacing = 15;
 let mode = "line"
@@ -16,7 +18,6 @@ const base_canvas = document.getElementById("base");
 const anime_canvas = document.getElementById("animation");
 const base_ctx = base_canvas.getContext("2d");
 const canvas = new fabric.Canvas("draw");
-
 
 $(document).ready( function() {
   win_width = window.innerWidth;
@@ -58,25 +59,24 @@ function set_grid() {
 }
 
 // 図形生成
-function add_line(x1, y1, x2, y2, color) {
+function add_line(x1, y1, x2, y2) {
   canvas.add(new fabric.Line(
     // (始点x, y, 終点x, y)
     [x1, y1, x2, y2], {
       strokeWidth: line_width, //太さ
-      stroke: color,
+      stroke: line_color,
       selectable: false,
       hasControls: false,
       hoverCursor: "default",
   }));
 }
 
-function add_rec(x1, y1, x2, y2, color) {
+function add_rec(x1, y1, x2, y2) {
   canvas.add(new fabric.Rect({
     left: x1, top: y1,
     width: x2-x1, height: y2-y1,
-    fill: color,
-    opacity: 0.5,
-    stroke: "black",
+    fill: "rgba(0, 0, 0, 0.2)",
+    stroke: rec_line_color,
     strokeWidth: line_width,
     selectable: false,
     hasControls: false,
@@ -112,9 +112,9 @@ canvas.on("mouse:up", function(options) {
       newY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
     }
     if(mode == "line") {
-      add_line(oldX, oldY, newX, newY, line_color);
+      add_line(oldX, oldY, newX, newY);
     } else if (mode=="rec") {
-      add_rec(oldX, oldY, newX, newY, line_color);
+      add_rec(oldX, oldY, newX, newY);
     }
   }
 })
@@ -151,55 +151,43 @@ canvas.on("object:moving", function(options) {
 })
 
 // モード切替
-color_list = ["red", "blue", "green", "black", "ic", "select"];
+operations = ["line", "rec", "select"];
+colors = ["red", "blue", "green", "black", "purple", "brown", "orange", "yellow", "gray"];
+
 function change_color(color, id) {
-  canvas.discardActiveObject(); // 選択の全解除
-  mode = "line";
   line_color = color;
-  let all_obj = canvas.getObjects();
-  all_obj.forEach(obj=>{
-    obj.hoverCursor = "default";
-    obj.selectable = false;
-  });
-
-  for(let i=0; i<color_list.length; i++) {
-    document.getElementById(color_list[i]).classList.remove("active");
+  for(let i=0; i<colors.length; i++) {
+    document.getElementById(colors[i]).classList.remove("active");
   }
   document.getElementById(id).classList.add("active");
 }
 
-function draw_rec(color, id) {
+function change_mode(draw_mode) {
   canvas.discardActiveObject(); // 選択の全解除
+  mode = draw_mode;
   let all_obj = canvas.getObjects();
-  mode = "rec";
-  line_color = color;
-  all_obj.forEach(obj=>{
-    obj.hoverCursor = "default";
-    obj.selectable = false;
-  });
-
-  for(let i=0; i<color_list.length; i++) {
-    document.getElementById(color_list[i]).classList.remove("active");
+  if(draw_mode=="select") {
+    all_obj.forEach(obj=>{
+      obj.hoverCursor = "move";
+      obj.selectable = true;
+    });
+  } else {
+    all_obj.forEach(obj=>{
+      obj.hoverCursor = "default";
+      obj.selectable = false;
+    });
   }
-  document.getElementById(id).classList.add("active");
-}
-
-function select(id) {
-  mode = "select";
-  let all_obj = canvas.getObjects();
-  all_obj.forEach(obj=>{
-    obj.hoverCursor = "move";
-    obj.selectable = true;
-  });
-
-  for(let i=0; i<color_list.length; i++) {
-    document.getElementById(color_list[i]).classList.remove("active");
+  for(let i=0; i<operations.length; i++) {
+    document.getElementById(operations[i]).classList.remove("active");
   }
-  document.getElementById(id).classList.add("active");
+  document.getElementById(draw_mode).classList.add("active");
 }
 
 // キャンバス全削除
 const clear_btn = document.getElementById("clear_btn");
 clear_btn.onclick = function(){
-  canvas.clear();
+  alarm_text = "特定の要素の削除は選択モードの状態でBackSpaceで消せます。\n本当に全部削除しても良いですか?";
+  if (window.confirm(alarm_text)) {
+    canvas.clear();
+  }
 };

@@ -9,17 +9,29 @@
   <script src="https://kit.fontawesome.com/33f8918f34.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <h3>簡易配線シミュレータ</h3>
-
-  <div class="colors">
-    <button id="red" class="box red active" onclick="change_color('#ff0000', 'red')"><i class="fas fa-pen"></i></button>
-    <button id="blue" class="box blue" onclick="change_color('#0000ff', 'blue')"><i class="fas fa-pen"></i></button>
-    <button id="green" class="box green" onclick="change_color('#008000', 'green')"><i class="fas fa-pen"></i></button>
-    <button id="black" class="box black" onclick="change_color('#000000', 'black')"><i class="fas fa-pen"></i></button>
-    <button id="ic" class="box IC" onclick="draw_rec('#808080', 'ic')"><i class="fas fa-microchip"></i></button>
-    <button id="select" class="box select" onclick="select('select')"><i class="fas fa-arrows-alt fa-lg"></i></button>
-    <button id="clear_btn" class="box clear">クリア</button>
+  <h3 class="title">簡易配線シミュレータ</h3>
+  <div class="opeco">
+    <div class="operations">
+      <button id="line" class="box line active" onclick="change_mode('line')"><i class="fas fa-pen"></i></button>
+      <button id="rec" class="box rec" onclick="change_mode('rec')"><i class="fas fa-microchip"></i></button>
+      <button id="select" class="box select" onclick="change_mode('select')"><i class="fas fa-arrows-alt fa-lg"></i></button>
+    </div>
+    
+    <!-- colors -->
+    <div class="colors">
+      <button id="red" class="box red active" onclick="change_color('#ff0000', 'red')"></button>
+      <button id="black" class="box black" onclick="change_color('#000000', 'black')"></button>
+      <button id="gray" class="box gray" onclick="change_color('#808080', 'gray')"></button>
+      <button id="blue" class="box blue" onclick="change_color('#0000ff', 'blue')"></i></button>
+      <button id="yellow" class="box yellow" onclick="change_color('#ffff00', 'yellow')"></i></button>
+      <button id="orange" class="box orange" onclick="change_color('#ff8c00', 'orange')"></i></button>
+      <button id="green" class="box green" onclick="change_color('#008000', 'green')"></button>
+      <button id="purple" class="box purple" onclick="change_color('#800080', 'purple')"></button>
+      <button id="brown" class="box brown" onclick="change_color('#a52a2a', 'brown')"></button>
+    </div>
+    <button id="clear_btn" class="box clear"><i class="fas fa-trash-alt"></i></button>
   </div>
+
 
   <div class="layer-block">
     <div id="layer" class="layer-wrap hidden">
@@ -28,7 +40,6 @@
       <canvas id="draw" class="canvas draw"></canvas>
     </div>
   </div>
-
 
   <script src="./js/fabric.min.js"></script>
   <script src="./js/jquery-3.4.1.min.js"></script>

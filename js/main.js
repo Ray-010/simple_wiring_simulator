@@ -45,6 +45,7 @@ canvas.on("mouse:move", function(options) {
       
       ctx.font = "bold 25px serif";
       ctx.fillStyle = "#000000";
+      ctx.globalAlpha = 1.0;
       x_value = Math.abs((moveX-oldX)/grid_spacing);
       y_value = Math.abs((moveY-oldY)/grid_spacing);
       ctx.fillText(`${x_value}x${y_value}`, moveX+5, b_oldY-10);
@@ -52,7 +53,8 @@ canvas.on("mouse:move", function(options) {
 
       ctx.globalAlpha = 0.5;
       ctx.strokeStyle = "#000000";
-      ctx.fillStyle = line_color;
+      ctx.fillStyle = rec_color;
+      ctx.globalAlpha = 0.3;
       ctx.rect(b_oldX, b_oldY, moveX-oldX, moveY-oldY);
       ctx.fill();
     }
@@ -64,3 +66,5 @@ canvas.on("mouse:up", function(options) {
   ctx.clearRect(0,0,can.width,can.height);
   can_mouse_event = false;
 })
+
+
