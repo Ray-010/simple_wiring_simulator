@@ -32,6 +32,14 @@ canvas.on("mouse:move", function(options) {
       ctx.lineTo(moveX, moveY);
 
     } else if (mode == "rec") {
+      
+      ctx.font = "bold 25px serif";
+      ctx.fillStyle = "#000000";
+      x_value = Math.abs((moveX-oldX)/grid_spacing)+1;
+      y_value = Math.abs((moveY-oldY)/grid_spacing)+1;
+      ctx.fillText(`${x_value}x${y_value}`, moveX+5, b_oldY-10);
+      ctx.stroke();
+
       ctx.globalAlpha = 0.5;
       ctx.strokeStyle = "#000000";
       ctx.fillStyle = line_color;
