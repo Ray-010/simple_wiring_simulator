@@ -9,6 +9,7 @@ let rec_color = "#000000"
 let line_width = 3;
 let grid_spacing = 15;
 let mode = "line"
+let modes = ["line", "rec", "select"];
 
 let activeObjLeft = null;
 let activeObjTop = null;
@@ -19,32 +20,9 @@ const anime_canvas = document.getElementById("animation");
 const base_ctx = base_canvas.getContext("2d");
 const canvas = new fabric.Canvas("draw");
 
-$(document).ready( function() {
-  win_width = window.innerWidth;
-  win_height = window.innerHeight;
-  base_canvas.setAttribute("width", win_width*0.8);
-  base_canvas.setAttribute("height", win_height*0.8);
-  anime_canvas.setAttribute("width", win_width*0.8);
-  anime_canvas.setAttribute("height", win_height*0.8);
-  canvas.setDimensions({width: win_width*0.8, height: win_height*0.8})
-  set_grid();
-
-  layer.classList.remove("hidden")
-})
-
-window.addEventListener("DOMContentLoaded", function() {
-  window.addEventListener("resize", function() {
-    win_width = window.innerWidth;
-    win_height = window.innerHeight;
-    base_canvas.setAttribute("width", win_width*0.8);
-    base_canvas.setAttribute("height", win_height*0.8);
-    anime_canvas.setAttribute("width", win_width*0.8);
-    anime_canvas.setAttribute("height", win_height*0.8);
-    canvas.setDimensions({width: win_width*0.8, height: win_height*0.8})
-    set_grid();
-  });
-})
-
+// Canvas Setting ---------------------------------------------------------------
+let win_width = window.innerWidth;
+let win_height = window.innerHeight;
 function set_grid() {
   base_ctx.clearRect(0,0,base_canvas.width,base_canvas.height);
   for(let y=0; y<Math.round((win_height/grid_spacing)); y++) {
@@ -57,8 +35,39 @@ function set_grid() {
     }
   }
 }
+function set_canvas() {
+  base_canvas.setAttribute("width", win_width);
+  base_canvas.setAttribute("height", win_height*0.9);
+  anime_canvas.setAttribute("width", win_width);
+  anime_canvas.setAttribute("height", win_height*0.9);
+  canvas.setDimensions({width: win_width, height: win_height})
+  set_grid();
+}
+$(document).ready( function() {
+  set_canvas();
+  // LocalStorageにデータがあれば反映
+  if(localStorage.getItem("canvas") != null) {
+    var canvas_json = localStorage.getItem("canvas");
+    canvas.loadFromJSON($.parseJSON(canvas_json), canvas.renderAll.bind(canvas));
+    let all_obj = canvas.getObjects();
+    all_obj.forEach(obj=>{
+      obj.hoverCursor = "default";
+      obj.selectable = false;
+      obj.hasControls = false;
+    });
+  }
+  layer.classList.remove("hidden")
+})
 
-// 図形生成
+window.addEventListener("DOMContentLoaded", function() {
+  window.addEventListener("resize", function() {
+    win_width = window.innerWidth;
+    win_height = window.innerHeight;
+    set_canvas()
+  });
+})
+
+// Create graphic ---------------------------------------------------------------
 function add_line(x1, y1, x2, y2) {
   canvas.add(new fabric.Line(
     // (始点x, y, 終点x, y)
@@ -70,7 +79,6 @@ function add_line(x1, y1, x2, y2) {
       hoverCursor: "default",
   }));
 }
-
 function add_rec(x1, y1, x2, y2) {
   canvas.add(new fabric.Rect({
     left: x1, top: y1,
@@ -84,6 +92,7 @@ function add_rec(x1, y1, x2, y2) {
   }));
 }
 
+// Canvas Events ---------------------------------------------------------------
 canvas.on("mouse:down", function(options) {
   mouse_move = true;
   if(mode=="rec") {
@@ -93,14 +102,12 @@ canvas.on("mouse:down", function(options) {
     oldX = Math.round(options.pointer.x/grid_spacing)*grid_spacing
     oldY = Math.round(options.pointer.y/grid_spacing)*grid_spacing
   }
-
   let activeObject = canvas.getActiveObject();
   if(activeObject) {
     activeObjLeft = activeObject.left;
     activeObjTop = activeObject.top;
   }
 })
-
 canvas.on("mouse:up", function(options) {
   if(mouse_move && mode!="select") {
     mouse_move = false;
@@ -190,5 +197,6 @@ clear_btn.onclick = function(){
   alarm_text = "特定の要素の削除は選択モードの状態でBackSpaceで消せます。\n本当に全部削除しても良いですか?";
   if (window.confirm(alarm_text)) {
     canvas.clear();
+    localStorage.removeItem("canvas");
   }
 };
