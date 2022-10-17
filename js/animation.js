@@ -51,9 +51,8 @@ canvas.on("mouse:move", function(options) {
       ctx.fillText(`${x_value}x${y_value}`, moveX+5, b_oldY-10);
       ctx.stroke();
 
-      ctx.globalAlpha = 0.5;
-      ctx.strokeStyle = "#000000";
-      ctx.fillStyle = rec_color;
+      ctx.strokeStyle = line_color;
+      ctx.fillStyle = line_color;
       ctx.globalAlpha = 0.3;
       ctx.rect(b_oldX, b_oldY, moveX-oldX, moveY-oldY);
       ctx.fill();

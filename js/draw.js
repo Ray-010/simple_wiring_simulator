@@ -4,8 +4,6 @@ let newX = null;//終点
 let newY = null;//終点
 let mouse_move = false;
 let line_color = "#ff0000"
-let rec_line_color = "#808080"
-let rec_color = "#000000"
 let line_width = 3;
 let grid_spacing = 15;
 let mode = "line"
@@ -68,6 +66,18 @@ window.addEventListener("DOMContentLoaded", function() {
 })
 
 // Create graphic ---------------------------------------------------------------
+let colors_rgba = {
+  "#ff0000": "rgba(255, 0, 0, 0.2)", // red
+  "#000000": "rgba(0, 0, 0, 0.2)", // black
+  "#808080": "rgba(128, 128, 128, 0.2)", // gray
+  "#0000ff": "rgba(0, 0, 255, 0.2)", // blue
+  "#ffff00": "rgba(255, 255, 0, 0.2)", // yellow
+  "#ff8c00": "rgba(255, 140, 0, 0.2)", // orange
+  "#008000": "rgba(0, 128, 0, 0.2)", // green
+  "#800080": "rgba(128, 0, 128, 0.2)", // purple
+  "#a52a2a": "rgba(165, 42, 42, 0.2)", // brown
+}
+
 function add_line(x1, y1, x2, y2) {
   canvas.add(new fabric.Line(
     // (始点x, y, 終点x, y)
@@ -83,8 +93,8 @@ function add_rec(x1, y1, x2, y2) {
   canvas.add(new fabric.Rect({
     left: x1, top: y1,
     width: x2-x1, height: y2-y1,
-    fill: "rgba(0, 0, 0, 0.2)",
-    stroke: rec_line_color,
+    fill: colors_rgba[line_color],
+    stroke: line_color,
     strokeWidth: line_width,
     selectable: false,
     hasControls: false,
@@ -163,7 +173,6 @@ colors = ["red", "blue", "green", "black", "purple", "brown", "orange", "yellow"
 
 function change_color(color, id) {
   line_color = color;
-  change_mode("line");
   for(let i=0; i<colors.length; i++) {
     document.getElementById(colors[i]).classList.remove("active");
   }
